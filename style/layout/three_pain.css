@@ -84,15 +84,6 @@ main > header {
     margin-right: 0px;
 }
 
-
-.three_pain > article {
-    display: flex;
-    flex-direction: column;    
-}
-.three_pain > article > #task_map {    
-    flex-grow: 1;
-}
-
 #map > footer {    
     line-height: 1em;
     max-width: 400px;

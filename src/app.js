@@ -26,8 +26,36 @@ const vm = new Vue({
     el: "#app",
     data:{        
         taskList: [],
+        org : "",
+        isUnsort: true,
+        nth : 1,
+        coordinateType: "latlng",
+        xyPlane : ""
     },
-    computed : {        
+    computed : { 
+        src : function(){
+            return this.isUnsort ? 
+                this.format(this.org) :
+                this.sortLabel(this.format(this.org));
+        },
+        planeRectangularCoodinateSystem: function(){
+            return this.src.map((line)=>{
+                const [latitude, longitude, label] = line;                
+                const lat = parseFloat(latitude);
+                const lng = parseFloat(longitude);
+                const {x, y} = datum.getXY(lat, lng, this.nth);
+                return [lat, lng, label.replace(/\n/,""), x, y]
+            })
+        },
+        latlngCoordinateSystem: function(){
+            return this.xyPlane.split("\n").map((line)=>{
+                const [label, x, y, others] = line.split(",")
+                const X = parseFloat(x);
+                const Y = parseFloat(y);
+                const {latitude, longitude} = datum.getLatLng(X, Y, this.nth); 
+                return [latitude, longitude, label];
+            })
+        }
     },
     mounted: function(ev){        
         // UIを整える        
@@ -38,6 +66,75 @@ const vm = new Vue({
 
     },
     methods:{
+        readfile(evt){
+            const ifile = evt.target.files[0]
+            new FileReader().readAs(ifile, "readAsText").then((content)=>{
+                if(this.coordinateType=='latlng'){
+                    this.org = content;
+                }else{
+                    this.xyPlane = content;
+                }
+            })
+        },
+        toggleSort(){
+            this.isUnsort = !this.isUnsort;
+        },
+        format(org){
+            const lines = org.split("\n");
+            const latlngRE = /\((.*), (.*)\)/;
+            var latlng = "";
+            var matchs, lat, lng, all, label;
+            return lines.inject([], (result, line)=>{
+                if(matchs = line.match(latlngRE)){
+                    if(lat == null && lng == null){
+                        [all, lat, lng] = matchs                        
+                    }else{
+                        result.push([lat, lng, ""]);　
+                        [all, lat, lng] = matchs
+                    }
+                }else if( line.match(/.*N.*E/)){
+                    lat = null
+                    lng = null 
+                }else if( matchs = line.match(/^\d.*/) ){
+                    [all, others] = matchs  
+                    result.push([lat, lng, all]);　
+                    lat = null
+                    lng = null
+                }
+                return result;
+            })
+        },
+        toCSV(a){
+            return a.map((e)=>{ return e.join(",") });
+        },
+        sortLabel(lines){
+            return lines.sort((a, b)=>{
+                if(a[2] > b[2])
+                    return 1;
+                if(a[2] == b[2])
+                    return 0;
+                if(a[2] < b[2])
+                    return -1
+            })
+        },
+        downloadGMyMap(){
+            this.localDownload(this.toCSV(this.src).join("\r\n"), "mymap.csv")
+        },
+        downloadLatLng2XY(){
+            this.localDownload(this.toCSV(this.planeRectangularCoodinateSystem).join("\r\n"), "latlng2xy.csv")
+        },
+        downloadXY2LatLng(){
+            this.localDownload(this.toCSV(this.latlngCoordinateSystem).join("\r\n"), "xy2mymap.csv")
+        },
+        localDownload(content, filename){
+            const blob = new Blob([ content ], {"type": "text/plain"});
+            var link = document.createElement("a")                                                            
+            link.download = filename;
+            link.href     = window.URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        },
     }
 });
 

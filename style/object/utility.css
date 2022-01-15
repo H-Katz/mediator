@@ -1,0 +1,15 @@
+.vertical-split  {
+    display: flex;
+    justify-content: space-between;
+    flex-direction:            row;
+    overflow-y:             scroll;
+}
+
+.vertical-split > * {
+    flex-grow: 1;
+}
+
+.terminal {
+    height: calc(100vh - 5em); 
+    overflow-y: scroll
+}
