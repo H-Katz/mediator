@@ -1,0 +1,66 @@
+/* 
+    base.css is default style like reset CSS.
+
+ */
+body {
+    line-height: 140%;
+    margin: 0px 0px 0px 0px;
+}
+
+header,
+footer{
+    background-color: #CCCCCC;
+    border: 1px inset black;
+}
+
+body > input {
+    display: none;
+}
+
+label {
+    user-select: none;
+}
+
+dialog > *{
+    margin: 0;
+    padding: 1em;
+}
+
+dialog header {
+    margin: 0;
+    padding: 0.6em;
+    height: 2em;
+    background-color: lightcyan;
+    border-top-left-radius: 0.6rem;
+    border-top-right-radius: 0.6rem;
+    border-bottom: 1px solid skyblue;
+}
+dialog h3 {
+    margin: 0;
+    padding: 0.3em 0.6em;
+    float: left;
+    border: unset;
+}
+
+dialog footer {
+    text-align: right;
+}
+
+dialog dl{
+    margin: 0px;
+    padding: 0px;
+}
+
+dialog dt:after{
+    content: ":"
+}
+
+dialog dt{
+    margin-top: 0.5em;
+/*    float: left; 
+    clear: both; */
+}
+dialog dd{
+    margin-top : 0.5em;
+    margin-left: 3em;
+}

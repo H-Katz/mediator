@@ -1,0 +1,211 @@
+.breadcrumbs > ul > li:before{
+    content: "> ";
+}
+.breadcrumbs > ul > li,
+.breadcrumbs > ul ul
+{
+    display: inline-block;
+}
+
+.slideshow{
+    white-space: nowrap;
+    overflow-x: scroll;
+    width: 400px;
+}
+.slideshow > li{
+    display: inline-block;
+}
+
+figure.right {
+    float: right;
+    width: 40%;
+}
+figure.right img {
+    width: 100%;
+}
+figcaption {
+    text-align: center
+}
+ul {
+    margin: 0px;
+    padding-left: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+main {
+    background-color: white;
+    border: 1px solid black;
+}
+
+header {
+    border-bottom: 1px solid white;
+    background-color: #CCCCCC;
+}
+
+section {
+    text-align: left;
+    margin: 0px 16px;
+}
+/* text semantics */
+strong { color: red; }
+
+p { text-indent: 1em; }
+
+h3 {
+    clear: both;
+    text-indent: 1em;
+    border-left-style: double;
+    border-bottom: 1px solid;
+}
+
+h4 {
+    clear: both;
+    margin-left: 1em;
+    text-indent: 1em;
+    border-left-style: double;
+    border-bottom: 1px dotted;
+}
+
+/* table */
+table{
+    border: outset 1px black;
+}
+table.zebra tr:nth-child(even){
+    background-color: #eeeeee;
+}
+td { text-align: right;}
+
+dl { margin-left: 1em;}
+dt { font-weight: bold;}
+dd { text-align: left;}
+td > dl > dt {text-align: left; }
+
+dl.oneline {
+    margin: 0;
+}
+dl.oneline dt{
+    float: left;
+    width: 7em;
+}
+dl.oneline dd{
+    width: 7em;
+}
+th{white-space: nowrap;}
+
+select, input {
+    font-family: monospace;
+}
+
+i:before {
+    padding-right: 4px; 
+}
+
+input::placeholder {
+    font-family: "Font Awesome 5 Free";
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    font-weight: 900;
+}
+
+/* tabMenu block */
+.tabMenu li{
+    display: inline-block;
+    border-bottom: 2px solid #9999FF;
+}
+
+/* interatction */
+header nav > ul > li:hover {
+    background-color: #9999FF;
+}
+
+/* loader */
+.loader {
+    width:  1em; /* ローディングアイコンのサイズになる */
+    height: 1em;
+    border-top: 3px solid rgba(0, 0, 0, 0.2);
+    border-right: 3px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 3px solid rgba(0, 0, 0, 0.2);
+    border-left: 3px solid black;
+    border-radius: 50%;    
+    transform: translateZ(0);
+    animation: spin 1.5s linear infinite;  /* アニメーションの指定 */
+    display: inline-block;
+}
+
+@keyframes spin { /* アニメーションの設定 */
+    0% {
+	transform: rotate(0deg); /* 0度回す */
+    }
+    50% {
+	transform: rotate(180deg);  /* 180度回す */
+    }
+    100% {
+	transform: rotate(360deg);  /* 360度回す */
+    }
+}
+
+
+.close{
+    margin-left: 4px;
+}
+
+.logo {
+    width: 30px;
+    height: 30px;
+    border: solid 1px white;
+    vertical-align: middle;
+}
+
+.logo:hover{
+    border: solid 1px;
+}
+
+.opened:before {
+    content: "\0f0d7";
+    font-weight: 900;
+    margin: 2px;
+}
+
+.closed:before {
+    content: "\0f0da";
+    font-weight: 900;
+    margin: 4px;
+}
+
+.namespace:before {  /* hard-hat */
+    content: "\0f807";
+    font-weight: 900;
+    margin: 4px;
+}
+
+button{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    appearance: none;
+    font-size: 16px;
+}
+
+input:required {
+    background-color: lightcyan;
+}
+
+dialog {
+    padding: 0;
+    border: 0;
+    border-radius: 0.6rem;
+    box-shadow: 0 0 1em black;
+}
+
+/* native backdrop */
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+}

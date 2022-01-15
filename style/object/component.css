@@ -1,0 +1,36 @@
+/* taskbar */
+
+.taskbar ul{
+    margin: 0;
+}
+.taskbar {
+    /* */ 
+    padding: 0;   
+}
+.taskbar label{
+    cursor:pointer;
+    border-style: none;
+    border-bottom: black;
+    padding: 0px 10px 3px;
+}
+.taskbar label:hover{
+    opacity: 0.3;
+}
+.taskbar input {
+    display: none;
+}
+.taskbar input:checked + label{
+    background-color: white;
+    border-style: outset;
+    border-bottom: white;
+    padding: 0px 10px 4px;
+}
+
+/* global Menu */
+.globalMenu ul {
+    display:flex;
+    margin: 0px;
+    padding: 2px;
+    flex-direction: row;
+    justify-content: space-around;
+}

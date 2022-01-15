@@ -1,0 +1,121 @@
+/* page structure */
+
+html {
+    /* for IE 10 past */
+    display: -webkit-box;           
+    display: flex;
+    -webkit-box-orient:  vertical;  
+    -webkit-box-direction: normal;  
+    -ms-flex-direction:    column;  
+    flex-direction:        column;
+    overflow: hidden;
+}
+
+body {
+    overscroll-behavior: none; /* Do not to bounce scroll  */
+    min-height: 100vh; /* for responsive, maybe */
+    overflow: hidden;
+    display: -webkit-box; 
+    display: flex;
+    -webkit-box-orient:  vertical;  
+    -webkit-box-direction: normal;  
+    -ms-flex-direction:    column;  
+    flex-direction:        column;
+    justify-content: space-between;
+}
+
+header li {
+    list-style-type: none;
+    display: inline-block;
+}
+
+/* task bar 
+body > header {
+
+}
+*/
+
+
+main {
+    min-height: 100vh;
+    flex-grow: 1;        
+    display: flex;    
+    overflow: hidden;    
+    -webkit-box-orient: horizontal; 
+    -webkit-box-direction:    column;
+    -ms-flex-direction:       column;
+    flex-direction:           column;
+    -webkit-box-pack:      justify; 
+    -ms-flex-pack:         justify; 
+    justify-content: space-between;  
+    align-content: flex-start;  
+}
+
+main > header {
+    /* タスクバー */
+    width: 100vw;
+}
+
+.three_pain {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.three_pain > *{
+    flex-grow: 1;
+}
+
+.three_pain > nav {
+    /* アウトラインメニュー */
+    overflow-y: scroll;
+    flex-grow: 0;
+    max-height: calc(100vh - 4em);
+    padding: 0.5em;
+}
+
+.three_pain > nav > input {
+    display: none;
+}
+
+.three_pain > nav section {
+    margin-left: 1em;
+    margin-right: 0px;
+}
+
+
+.three_pain > article {
+    display: flex;
+    flex-direction: column;    
+}
+.three_pain > article > #task_map {    
+    flex-grow: 1;
+}
+
+#map > footer {    
+    line-height: 1em;
+    max-width: 400px;
+}
+#map > footer > ul{
+    padding: 0px;    
+    white-space: nowrap;
+    overflow-x: scroll;
+}
+
+#map > footer > ul li{
+    list-style-type: none;
+    display: inline-block;
+    text-align:     center;
+    vertical-align: middle;
+    color: #333399;
+    margin-left: 1em;
+    padding: 4px;
+}
+
+details{
+    margin-left: 1em;
+}
+
+div.gm-style img { filter:chroma(color=#000000); }
+

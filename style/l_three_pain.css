@@ -1,0 +1,438 @@
+/*
+    template page; three_pain 
+    defined
+      * global menu
+      * tool menu
+      * start menu
+      * outline menu
+      * status bar
+    
+ */
+
+/* page structure */
+html {
+    /* for IE 10 past */
+    display: -webkit-box;           
+    display: flex;
+    -webkit-box-orient:  vertical;  
+    -webkit-box-direction: normal;  
+    -ms-flex-direction:    column;  
+    flex-direction:        column;
+    overflow: hidden;
+}
+
+body {
+    height: 100vh;
+    min-height: 100vh; /* for responsive, maybe */
+    overflow: hidden;
+    display: -webkit-box; 
+    display: flex;
+    -webkit-box-orient:  vertical;  
+    -webkit-box-direction: normal;  
+    -ms-flex-direction:    column;  
+    flex-direction:        column;
+    justify-content: space-between;
+}
+
+/* global menu block */
+.globalMenu {
+    width: 100vw;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* global menu elements */
+.globalMenu details{
+    margin: 0;
+    padding: 0;
+}
+.globalMenu details > summary:focus{
+    outline: none;
+}
+.globalMenu details > summary{
+    list-style: none;
+    cursor: pointer;
+}
+.globalMenu details > summary::-webkit-details-marker{
+    display: none;
+}
+.globalMenu details > summary::before{
+    content: '\0f0c9';    
+    padding: 0em 0.5em;
+    width: 30px;
+    font-weight: 900;
+}
+.globalMenu details[open] > summary::before{    
+    content: '\0f00d';    
+    padding: 0em 0.5em;
+    width: 30px;
+    font-weight: 900;
+}
+
+.globalMenu > ul {
+    border-style: none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    background-color : #CCCCCC;
+}
+
+.globalMenu li{  
+    list-style-type: none;
+    display: inline-block;
+    color: #333399;
+    font-weight: bold;
+    margin-left: 1em;
+    padding: 4px;
+}
+
+.globalMenu > ul > li > a {
+    text-decoration: none;
+}
+
+.globalMenu > ul > li:hover ul{
+    background-color : #CCCCCC;
+    margin:  0px;
+    padding: 0px;
+    display: block;
+}
+
+.globalMenu > ul > li:hover ul li{
+    list-style-type: none;
+    display: list-item;
+    text-align: left;
+}
+
+.globalMenu > ul ul{
+    border: 1px solid black;
+    display: none;
+    position: absolute;
+    z-index: 10;
+}
+.globalMenu > ul ul ul{
+    border: 0px solid black;
+    display: none;
+    position: relative;
+}
+
+/* smart search */
+
+.globalMenu > ul > li:hover .smartsearch input:not(:focus) ul,
+details.smartsearch[open] summary > ul{
+    display: none;
+}
+
+/* main container */
+.three_pain {
+    flex-grow: 1;         /* variable; */
+    display: -webkit-box; 
+    display: flex;
+    overflow: hidden;
+    -webkit-box-orient: horizontal; 
+    -webkit-box-direction:     row; 
+    -ms-flex-direction:        row; 
+    flex-direction:            row; 
+    -webkit-box-pack:      justify; 
+    -ms-flex-pack:         justify; 
+    justify-content: space-between; 
+
+}
+
+/* status menu */
+.statusMenu {
+    width: 100vw;
+    -ms-flex-negative: 1; 
+    flex-shrink:       0; /* fixed; not shrink; */
+}
+
+
+/* content navigation menu 
+   ** outline menu 
+   ** tool menu
+ */
+
+   /* outline menu */
+
+.outlineMenu {
+    overflow-y: auto;
+}
+
+.outlineMenu > input {
+    display: none;
+}
+.outlineMenu header {
+    position:  relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.outlineMenu header li {
+    list-style-type: none;
+    display: inline-block;
+}
+
+.outlineMenu section {
+    margin-left: 1em;
+    margin-right: 0;
+}
+
+
+
+#isNamespacesOpened:not(:checked) ~ dl > dt > label[for="isNamespacesOpened"]:first-child + label[for="isNamespacesOpened"] {
+    display: none; 
+}
+#isNamespacesOpened:checked ~ dl > dt > label[for="isNamespacesOpened"]:first-child{
+    display: none; 
+}
+#isNamespacesOpened:checked ~ dl > dd{
+    display: none;
+}
+
+
+/* tool menu block */
+/*
+body > nav {  
+    width: 100vw;
+}*/
+
+.toolMenu {
+    padding: 0em;
+    background-color : #CCCCCC;
+    display: flex;
+    justify-content: space-between;
+    align-items:            center;
+}
+
+.toolMenu > ul{
+    border: 1px solid #999999;
+    border-style: outset;
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+    background-color : #CCCCCC;
+}
+
+.toolMenu li{  
+    list-style-type: none;
+    display: inline-block;
+    color: #333399;
+    font-weight: bold;
+    padding: 4px;
+    vertical-align: middle;
+}
+/* startMenu block open/close */
+
+#isOpenStartMenu:not(:checked) ~ * label#openStartMenu,
+#isOpenStartMenu:checked       ~ * label#closeStartMenu{
+    display: block;
+}
+#isOpenStartMenu:checked       ~ * label#openStartMenu,
+#isOpenStartMenu:not(:checked) ~ * label#closeStartMenu{
+    display: none;
+}
+
+.startMenu{
+    position: absolute;
+    left: -300px;
+    margin:  0px;
+    padding: 0px;
+    background-color: white;
+    transition: all 0.5s ease;
+    border: 1px solid black;
+    z-index: 1000;
+}
+
+#isOpenStartMenu:checked       ~ * .startMenu,
+#isOpenStartMenu:hover         ~ * .startMenu,
+.startMenu:hover
+{
+    left: 0px;
+}
+
+.commands li {
+    display: inline;
+}
+
+/* editableMenu */
+/* .outlineMenu dl {
+    padding-right: 4px;
+}  
+ */
+
+.commands{
+    float: right;
+    margin-right: 1em;
+}
+/* arrange input */
+
+details{
+    margin-left: 1em;
+}
+details > input[name] { 
+    display: none;
+}
+.editableMenu > ul{
+    margin: 0;
+    padding: 0;
+}
+.editableMenu ul.commands{
+    padding: 0;
+}
+
+/* editableMenu */
+.editableMenu dt {
+    display: list-item;
+    list-style: disc;
+    margin-left: 1em;
+}
+.editableMenu dt > input:not(:focus) {
+    border: none;
+    border-radius: 0;
+    outline: none;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+    appearance:         none;
+}
+.editableMenu dd {
+    margin-left: 1em;
+}
+/* editableMenu/hover */
+
+.editableMenu summary:hover,
+.editableMenu summary ~ label:hover,
+.editableMenu summary ~ label ~ ul>li:hover,
+.editableMenu dl dd:hover{
+    color: black;
+    background-color: springgreen;
+}
+.editableMenu dt > input:not(:focus):hover{
+    border: dotted 1px 
+}
+
+/* editableMenu/interaction */
+/*
+#pc_cut:checked    ~  dl dd:not(.pc_cut),
+#pc_delete:checked ~  dl dd:not(.pc_delete),
+#pc_erase:checked  ~  dl dd:not(.pc_erase){
+    display: none;
+}*/
+
+.editableMenu details:not([open]) label {
+    visibility: hidden;
+}
+
+aside#removableMenu {
+    background-color: #CCCCCC;
+    position: absolute;
+}
+aside#removableMenu > ul{
+    list-style-type: none;
+    padding: 0 0.5em 0;
+}
+aside#removableMenu label > i{
+    padding-right: 4px;
+}
+
+aside#compositionMenu{
+    border-style: outset;
+    background-color: #CCCCCC;
+    position: absolute;
+}
+aside#compositionMenu > ul{
+    list-style-type: none;
+    padding: 0 0.5em 0;
+}
+aside#compositionMenu dd:hover:after{
+    content: "\f0d9";
+}
+
+/* menu_item block */
+
+.toolMenu > li,
+.statusMenu > li{
+    list-style-type: none;
+    display: inline-block;
+    vertical-align: middle;
+    color: #333399;
+    margin-left: 1em;
+    padding: 4px;
+}
+
+
+/* content navigation menu 
+   * start menu 
+   */
+
+/* main contents elements */
+main > article{
+    -webkit-box-flex:  1; /* */
+    -ms-flex-positive: 1; /* */
+    flex-grow:         1;
+    overflow:hidden;      /* for onresize */
+    display:flex;
+}
+
+/* side menu */
+
+/* common element style */
+body {
+    background: #CCCCCC;
+    line-height: 140%;
+    margin: 0px 0px 0px 0px;
+}
+body > footer{
+    background-color: #CCCCCC;
+    border: 1px inset black;
+}
+
+body > input {
+    display: none;
+}
+
+nav li{
+    list-style-type: none;
+}
+
+dialog > *{
+    margin: 0;
+    padding: 1em;
+}
+
+dialog header {
+    margin: 0;
+    padding: 0.6em;
+    height: 2em;
+    background-color: lightcyan;
+    border-top-left-radius: 0.6rem;
+    border-top-right-radius: 0.6rem;
+    border-bottom: 1px solid skyblue;
+}
+dialog h3 {
+    margin: 0;
+    padding: 0.3em 0.6em;
+    float: left;
+    border: unset;
+}
+
+dialog footer {
+    text-align: right;
+}
+
+dialog dl{
+    margin: 0px;
+    padding: 0px;
+}
+
+dialog dt:after{
+    content: ":"
+}
+
+dialog dt{
+    margin-top: 0.5em;
+/*    float: left; 
+    clear: both; */
+}
+dialog dd{
+    margin-top : 0.5em;
+    margin-left: 3em;
+}

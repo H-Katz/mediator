@@ -1,0 +1,22 @@
+{
+  "name": "mediator",
+  "version": "0.0.0",
+  "description": "mediator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/H-Katz/mediator.git"
+  },
+  "author": "H.Katz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/H-Katz/mediator/issues"
+  },
+  "homepage": "https://github.com/H-Katz/mediator#readme",
+  "dependencies": {
+    "platform": "^1.3.6"
+  }
+}
