@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="mobile-web-app-capable" content="yes">
-        <title>modular style</title>
+        <title>Mediator</title>
         <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" />
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.0.10/font-awesome-animation.css" media="all" />
         <link rel="stylesheet" type="text/css" href="style/foundation/base.css" /> 
@@ -22,17 +22,84 @@
         <main id="app">
             <header class="taskbar"> <!-- タスクバー -->
                 <ul>
+                    <li>Mediator</li>
                 </ul>
             </header>
             <header class="globalMenu"><!-- グローバルメニュー　-->
                 <ul>
+                    <li>
+                        <label><input type="radio" name="coordinateSystem" v-model="coordinateType" value="latlng">緯度経度(lat, lng)</label>
+                        <label><input type="radio" name="coordinateSystem" v-model="coordinateType" value="XY">平面直角(X, Y)</label>
+                        <select v-model="nth">
+                            <option value="1">1系</option>
+                            <option value="2">2系</option>
+                            <option value="3">3系</option>
+                            <option value="4">4系</option>
+                            <option value="5">5系</option>
+                            <option value="6">6系</option>
+                            <option value="7">7系</option>
+                            <option value="8">8系</option>
+                            <option value="9">9系</option>
+                            <option value="10">10系</option>
+                            <option value="11">11系</option>
+                            <option value="12">12系</option>
+                            <option value="13">13系</option>
+                            <option value="14">14系</option>
+                            <option value="15">15系</option>
+                            <option value="16">16系</option>
+                            <option value="17">17系</option>
+                            <option value="18">18系</option>
+                            <option value="19">19系</option>
+                        </select>
+                    </li>
                 </ul>
             </header>
             <div class="three_pain">
-                <nav> <!-- アウトラインメニュー -->
+                <nav> <!-- アウトラインメニュー -->                    
                 </nav>
-                <aside></aside>
-                <article></article>
+                <!-- <aside></aside> -->
+                <article class="vertical-split">
+                    <section>
+                        <header>
+                            <ul>
+                                <li><label>入力</label></li>                                
+                                <li><input type="file" @change="readfile"></label></li>
+                            </ul>
+                        </header>
+                        <pre class="terminal" style="width: 25vw;">{{ (org == "" && xyPlane=="") ? "処理したいデータファイルを選択してください": (coordinateType=='latlng' ? org : xyPlane) }}</pre>
+                    </section>                    
+                    <section>
+                        <header>
+                            <ul>
+                                <li>GMyMapデータ入力整形</li>
+                                <li><button @click="toggleSort">整列</button></li>
+                                <li><button @click="downloadGMyMap">DL</button></li>
+                            </ul>
+                        </header>
+                        <pre class="terminal">要素数:{{src.length}}
+{{ toCSV(src).join("\n") }}
+                        </pre>
+                    </section>
+                    <section>
+                        <header>
+                            <ul>
+                                <li>変換(lat,lng)=>(X,Y)</li>
+                                <li><button @click="downloadLatLng2XY">DL</button></li>
+                            </ul>                            
+                        </header>
+                        <pre class="terminal">{{toCSV(planeRectangularCoodinateSystem).join("\n")}}</pre>                        
+                    </section>
+                    <section>
+                        <header>
+                            <ul>
+                                <li>(X,Y)=>変換(lat,lng)</li>                                
+                                <li><button @click="downloadXY2LatLng">DL</button></li>
+                            </ul>
+                        </header>
+                        <pre class="terminal">{{toCSV(latlngCoordinateSystem).join("\n")}}</pre>
+                    </section>
+                    
+                </article>
             </div>
         </main>
         <script src="src/app.js"></script>
