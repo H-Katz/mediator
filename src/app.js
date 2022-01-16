@@ -4,6 +4,28 @@ const config = {
     },
 }
 
+class OffRadio {
+    constructor(){
+        this.checked = {}
+        this.onclick= (evt)=>{
+            const sender = evt.target;
+            const name = sender.name;
+            if (this.checked[name] === sender) {
+                delete this.checked[name];
+                sender.checked = false
+            } else {
+                this.checked[name] = sender;
+            }
+        }
+    }  
+    static get onclick(){
+        if (!OffRadio.checked){
+            OffRadio.checked = new OffRadio()
+        }
+        return OffRadio.checked.onclick
+    }
+}
+
 class Repository {
     constructor(drivers){
         this.tableList={
@@ -26,6 +48,12 @@ const vm = new Vue({
     el: "#app",
     data:{        
         taskList: [],
+        programName: "",
+        program: {
+            'mymap2xy': 0,
+            'xy2latlng': 0
+        },
+        offRadio: {},
         org : "",
         isUnsort: true,
         nth : 1,
@@ -57,19 +85,36 @@ const vm = new Vue({
             })
         }
     },
+    watch: {
+    },
     mounted: function(ev){        
         // UIを整える        
         console.log("mounted");
+
+
         /* document.addEventListener('touchmove', function(e) { // バウンススクロールの禁止for Safari
             e.preventDefault();
         }, {passive: false}); */
 
     },
     methods:{
+        uncheck(evt){            
+            const sender = evt.target;
+            const name = sender.name;
+            if (this.offRadio[name] === sender) {
+                delete this.offRadio[name];
+                sender.checked = false
+            } else {
+                this.offRadio[name] = sender;
+            }            
+            if(this.offRadio[name] == null){
+                this.program[sender.id.split('_')[0]] = 0
+            }
+        },
         readfile(evt){
             const ifile = evt.target.files[0]
             new FileReader().readAs(ifile, "readAsText").then((content)=>{
-                if(this.coordinateType=='latlng'){
+                if(this.programName=='mymap2xy'){
                     this.org = content;
                 }else{
                     this.xyPlane = content;

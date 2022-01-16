@@ -17,6 +17,8 @@
         <script src="lib/vue.min.js"></script>
         <script src="lib/rb.js"></script>
         <script src="lib/datum.js"></script>
+        <style>
+        </style>
     </head>
     <body>
         <main id="app">
@@ -27,9 +29,50 @@
             </header>
             <header class="globalMenu"><!-- グローバルメニュー　-->
                 <ul>
-                    <li>
-                        <label><input type="radio" name="coordinateSystem" v-model="coordinateType" value="latlng">緯度経度(lat, lng)</label>
-                        <label><input type="radio" name="coordinateSystem" v-model="coordinateType" value="XY">平面直角(X, Y)</label>
+                </ul>
+            </header>
+            <div class="three_pain">                            
+                <nav class="outlineMenu"> <!-- アウトラインメニュー -->
+                    <header><h1>Mediator</h1></header>
+                    <dl>
+                        <dt><label><input type="radio" name="program" v-model="programName" value="mymap2xy">緯度経度変換(lat, lng)=>(X, Y)</label></dt>
+                        <dd><label><input type="radio" id="mymap2xy_1" name="program1" v-model="program['mymap2xy']" value="1" @click="uncheck">formatter</label></dd>
+                        <!-- <dd><label><input type="radio" name="program1" v-model="program['mymap2xy']" value="2">整列</label></dd> -->
+                        <dd><label><input type="radio" id="mymap2xy_2" name="program1" v-model="program['mymap2xy']" value="2" @click="uncheck">変換</label></dd>
+
+                        
+                        <dt><label><input type="radio" name="program" v-model="programName" value="xy2latlng">平面直角変換(X, Y)=>(lat, lng)</label></dt>
+                        <dd><label><input type="radio" id="xy2latlng_1" name="program2" v-model="program['xy2latlng']" value="1" @click="uncheck">変換</label></dd>
+                    </dl>
+                </nav>
+                <!-- <aside></aside> -->
+                <article class="vertical-split" v-show="programName=='mymap2xy'">
+                    <section v-show="program['mymap2xy'] == 1|| program['mymap2xy'] == 0">
+                        <header>
+                            <ul>
+                                <li><label>入力</label></li>                                
+                                <li><input type="file" @change="readfile"></label></li>
+                            </ul>
+                        </header>
+                        <pre class="terminal" style="width: 25vw;">{{ (org == "") ? "処理したいデータファイルを選択してください": org}}</pre>
+                    </section>
+                    <section v-show="program['mymap2xy'] == 2 || program['mymap2xy'] == 1">
+                        <header>
+                            <ul>
+                                <li>GMyMapデータ入力整形</li>
+                                <li><button @click="toggleSort">整列</button></li>
+                                <li><button @click="downloadGMyMap">DL</button></li>
+                            </ul>
+                        </header>
+                        <pre class="terminal">要素数:{{src.length}}
+{{ toCSV(src).join("\n") }}
+                        </pre>
+                    </section>
+                    <section v-show="program['mymap2xy'] == 0 || program['mymap2xy'] == 2">
+                        <header>
+                            <ul>
+                                <li>変換(lat,lng)=>(X,Y)</li>
+                                <li>
                         <select v-model="nth">
                             <option value="1">1系</option>
                             <option value="2">2系</option>
@@ -51,54 +94,55 @@
                             <option value="18">18系</option>
                             <option value="19">19系</option>
                         </select>
-                    </li>
-                </ul>
-            </header>
-            <div class="three_pain">
-                <nav> <!-- アウトラインメニュー -->                    
-                </nav>
-                <!-- <aside></aside> -->
-                <article class="vertical-split">
-                    <section>
+                                </li>
+                                <li><button @click="downloadLatLng2XY">DL</button></li>
+                            </ul>                            
+                        </header>
+                        <pre class="terminal">{{toCSV(planeRectangularCoodinateSystem).join("\n")}}</pre>
+                    </section>
+                </article>
+                <article class="vertical-split" v-show="programName=='xy2latlng'">
+                    <section v-show="program['xy2latlng'] == 1|| program['xy2latlng'] == 0">
                         <header>
                             <ul>
                                 <li><label>入力</label></li>                                
                                 <li><input type="file" @change="readfile"></label></li>
                             </ul>
                         </header>
-                        <pre class="terminal" style="width: 25vw;">{{ (org == "" && xyPlane=="") ? "処理したいデータファイルを選択してください": (coordinateType=='latlng' ? org : xyPlane) }}</pre>
-                    </section>                    
-                    <section>
-                        <header>
-                            <ul>
-                                <li>GMyMapデータ入力整形</li>
-                                <li><button @click="toggleSort">整列</button></li>
-                                <li><button @click="downloadGMyMap">DL</button></li>
-                            </ul>
-                        </header>
-                        <pre class="terminal">要素数:{{src.length}}
-{{ toCSV(src).join("\n") }}
-                        </pre>
+                        <pre class="terminal" style="max-width: 40vw;">{{ (xyPlane=="") ? "処理したいデータファイルを選択してください": xyPlane }}</pre>
                     </section>
-                    <section>
+                    <section v-show="program['xy2latlng'] == 0|| program['xy2latlng'] == 1">
                         <header>
                             <ul>
-                                <li>変換(lat,lng)=>(X,Y)</li>
-                                <li><button @click="downloadLatLng2XY">DL</button></li>
-                            </ul>                            
-                        </header>
-                        <pre class="terminal">{{toCSV(planeRectangularCoodinateSystem).join("\n")}}</pre>                        
-                    </section>
-                    <section>
-                        <header>
-                            <ul>
-                                <li>(X,Y)=>変換(lat,lng)</li>                                
+                                <li>変換(X,Y)=>(lat,lng)</li>                                
+                                <li>
+                        <select v-model="nth">
+                            <option value="1">1系</option>
+                            <option value="2">2系</option>
+                            <option value="3">3系</option>
+                            <option value="4">4系</option>
+                            <option value="5">5系</option>
+                            <option value="6">6系</option>
+                            <option value="7">7系</option>
+                            <option value="8">8系</option>
+                            <option value="9">9系</option>
+                            <option value="10">10系</option>
+                            <option value="11">11系</option>
+                            <option value="12">12系</option>
+                            <option value="13">13系</option>
+                            <option value="14">14系</option>
+                            <option value="15">15系</option>
+                            <option value="16">16系</option>
+                            <option value="17">17系</option>
+                            <option value="18">18系</option>
+                            <option value="19">19系</option>
+                        </select>
+                                </li>
                                 <li><button @click="downloadXY2LatLng">DL</button></li>
                             </ul>
                         </header>
                         <pre class="terminal">{{toCSV(latlngCoordinateSystem).join("\n")}}</pre>
                     </section>
-                    
                 </article>
             </div>
         </main>
