@@ -1,3 +1,5 @@
+import Datum from '../lib/datum.js';
+
 const config = {
     drivers:{
 
@@ -128,7 +130,7 @@ const vm = new Vue({
             const lines = org.split("\n");
             const latlngRE = /\((.*), (.*)\)/;
             var latlng = "";
-            var matchs, lat, lng, all, label;
+            var matchs, lat, lng, all, label, others;
             return lines.inject([], (result, line)=>{
                 if(matchs = line.match(latlngRE)){
                     if(lat == null && lng == null){
