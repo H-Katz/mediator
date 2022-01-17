@@ -56,6 +56,7 @@ const vm = new Vue({
             'xy2latlng': 0
         },
         offRadio: {},
+        encoding: "SJIS",
         org : "",
         isUnsort: true,
         nth : 1,
@@ -115,11 +116,11 @@ const vm = new Vue({
         },
         readfile(evt){
             const ifile = evt.target.files[0]
-            new FileReader().readAs(ifile, "readAsText").then((content)=>{
+            new FileReader().readAs(ifile, "readAsBinaryString").then((content)=>{
                 if(this.programName=='mymap2xy'){
-                    this.org = content;
+                    this.org = Encoding.convert(content, "UNICODE", this.encoding);
                 }else{
-                    this.xyPlane = content;
+                    this.xyPlane = Encoding.convert(content, "UNICODE", this.encoding);
                 }
             })
         },
@@ -174,7 +175,8 @@ const vm = new Vue({
             this.localDownload(this.toCSV(this.latlngCoordinateSystem).join("\r\n"), "xy2mymap.csv")
         },
         localDownload(content, filename){
-            const blob = new Blob([ content ], {"type": "text/plain"});
+            let bom  = new Uint8Array([0xEF, 0xBB, 0xBF]);
+            const blob = new Blob([ bom, content ], {"type": "text/csv"});
             var link = document.createElement("a")                                                            
             link.download = filename;
             link.href     = window.URL.createObjectURL(blob);

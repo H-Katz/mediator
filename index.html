@@ -14,8 +14,10 @@
         <link rel="stylesheet" type="text/css" href="style/object/project.css" />
         <link rel="stylesheet" type="text/css" href="style/object/utility.css" />
         <script src="node_modules/platform/platform.js"></script>
+        <script src="node_modules/encoding-japanese/encoding.min.js"></script>
         <script src="lib/vue.min.js"></script>
         <script src="lib/rb.js"></script>
+        <script src=""></script>
         <style>
         </style>
     </head>
@@ -59,6 +61,9 @@
                             <header>
                                 <ul>
                                     <li><label>入力</label></li>                                
+                                    <li>文字コード
+                                        <label><input type="radio" name="endoing" v-model="encoding" value="SJIS">SJIS</label>
+                                        <label><input type="radio" name="endoing" v-model="encoding" value="UTF8">UTF8</label>
                                     <li><input type="file" @change="readfile"></label></li>
                                 </ul>
                             </header>
@@ -113,7 +118,11 @@
                         <section v-show="program['xy2latlng'] == 1|| program['xy2latlng'] == 0">
                             <header>
                                 <ul>
-                                    <li><label>入力</label></li>                                
+                                    <li><label>入力</label></li>             
+                                    <li>文字コード
+                                        <label><input type="radio" name="encoding" v-model="encoding" value="SJIS">SJIS</label>
+                                        <label><input type="radio" name="encoding" v-model="encoding" value="UTF8">UTF8</label>
+                                    </li>
                                     <li><input type="file" @change="readfile"></label></li>
                                 </ul>
                             </header>
