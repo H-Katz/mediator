@@ -67,23 +67,6 @@ main > header {
     flex-grow: 1;
 }
 
-.three_pain > nav {
-    /* アウトラインメニュー */
-    overflow-y: scroll;
-    flex-grow: 0;
-    max-height: calc(100vh - 4em);
-    padding: 0.5em;
-}
-
-.three_pain > nav > input {
-    display: none;
-}
-
-.three_pain > nav section {
-    margin-left: 1em;
-    margin-right: 0px;
-}
-
 #map > footer {    
     line-height: 1em;
     max-width: 400px;
