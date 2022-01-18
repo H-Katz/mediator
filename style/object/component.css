@@ -26,7 +26,59 @@
     padding: 0px 10px 4px;
 }
 
+/* outline Menu */
+.outlineMenu {
+    flex-grow: 0;
+    max-height: calc(100vh - 4em);
+    overflow-y: scroll;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+}
+
+
 /* global Menu */
+.globalMenu {
+    position: sticky;
+    top:0;
+    z-index: 2;
+}
+
+.globalMenu details{
+    margin: 0;
+    padding: 0;
+}
+.globalMenu details > summary{
+    list-style: none;
+    cursor: pointer;
+}
+.globalMenu details[open] input{ /* open 時にinputがずれるのを防ぐ*/
+    position: relative;
+    top: 0;
+    left: 3px;
+}
+.globalMenu details > summary::-webkit-details-marker{
+    display: none;
+}
+.globalMenu details > summary:focus{
+    outline: none;
+}
+.globalMenu details > summary::before{
+    content: '\0f0c9';    
+    padding: 0em 0.5em;
+    width: 30px;
+    font-weight: 900;
+}
+.globalMenu details[open] > summary::before{    
+    content: '\0f00d';    
+    padding: 0em 0.5em;
+    width: 32px;
+    font-weight: 900;
+}
+
 .globalMenu ul {
     display:flex;
     margin: 0px;

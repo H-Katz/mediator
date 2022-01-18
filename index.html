@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="mobile-web-app-capable" content="yes">
-        <title>modular style</title>
+        <title>Mediator</title>
         <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" />
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.0.10/font-awesome-animation.css" media="all" />
         <link rel="stylesheet" type="text/css" href="style/foundation/base.css" /> 
@@ -14,28 +14,158 @@
         <link rel="stylesheet" type="text/css" href="style/object/project.css" />
         <link rel="stylesheet" type="text/css" href="style/object/utility.css" />
         <script src="node_modules/platform/platform.js"></script>
+        <script src="node_modules/encoding-japanese/encoding.min.js"></script>
         <script src="lib/vue.min.js"></script>
         <script src="lib/rb.js"></script>
-        <script src="lib/datum.js"></script>
+        <script src=""></script>
+        <style>
+        </style>
     </head>
     <body>
         <main id="app">
             <header class="taskbar"> <!-- タスクバー -->
                 <ul>
-                </ul>
-            </header>
-            <header class="globalMenu"><!-- グローバルメニュー　-->
-                <ul>
+                    <li>Mediator</li>
                 </ul>
             </header>
             <div class="three_pain">
-                <nav> <!-- アウトラインメニュー -->
-                </nav>
-                <aside></aside>
-                <article></article>
+                <nav class="outlineMenu"> <!-- アウトラインメニュー -->
+                    <header class="globalMenu fa"><!-- グローバルメニュー　-->
+                        <details>
+                            <summary>
+                                <input type="text" name="input">
+                            </summary>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </details>
+                    </header>
+                    <dl style="width: max-content">
+                        <dt><label><input type="radio" name="program" v-model="programName" value="mymap2xy">緯度経度変換(lat, lng)=>(X, Y)</label></dt>
+                        <dd><label><input type="radio" id="mymap2xy_1" name="program1" v-model="program['mymap2xy']" value="1" @click="uncheck">formatter</label></dd>
+                        <!-- <dd><label><input type="radio" name="program1" v-model="program['mymap2xy']" value="2">整列</label></dd> -->
+                        <dd><label><input type="radio" id="mymap2xy_2" name="program1" v-model="program['mymap2xy']" value="2" @click="uncheck">変換</label></dd>
+
+                        
+                        <dt><label><input type="radio" name="program" v-model="programName" value="xy2latlng">平面直角変換(X, Y)=>(lat, lng)</label></dt>
+                        <dd><label><input type="radio" id="xy2latlng_1" name="program2" v-model="program['xy2latlng']" value="1" @click="uncheck">変換</label></dd>
+                    </dl>
+                </nav>                
+                <div>
+                    <header>
+                        <ul>
+                        </ul>
+                    </header>
+                    <article class="vertical-split" v-show="programName=='mymap2xy'">
+                        <section v-show="program['mymap2xy'] == 1|| program['mymap2xy'] == 0">
+                            <header>
+                                <ul>
+                                    <li><label>入力</label></li>                                
+                                    <li>文字コード
+                                        <label><input type="radio" name="endoing" v-model="encoding" value="SJIS">SJIS</label>
+                                        <label><input type="radio" name="endoing" v-model="encoding" value="UTF8">UTF8</label>
+                                    <li><input type="file" @change="readfile"></label></li>
+                                </ul>
+                            </header>
+                            <pre class="terminal" style="width: 25vw;">{{ (org == "") ? "処理したいデータファイルを選択してください": org}}</pre>
+                        </section>
+                        <section v-show="program['mymap2xy'] == 2 || program['mymap2xy'] == 1">
+                            <header>
+                                <ul>
+                                    <li>GMyMapデータ入力整形</li>
+                                    <li><button @click="toggleSort">整列</button></li>
+                                    <li><button @click="downloadGMyMap">DL</button></li>
+                                </ul>
+                            </header>
+                            <pre class="terminal">要素数:{{src.length}}
+{{ toCSV(src).join("\n") }}
+                            </pre>
+                        </section>
+                        <section v-show="program['mymap2xy'] == 0 || program['mymap2xy'] == 2">
+                            <header>
+                                <ul>
+                                    <li>変換(lat,lng)=>(X,Y)</li>
+                                    <li>
+                                        <select v-model="nth">
+                                            <option value="1">1系</option>
+                                            <option value="2">2系</option>
+                                            <option value="3">3系</option>
+                                            <option value="4">4系</option>
+                                            <option value="5">5系</option>
+                                            <option value="6">6系</option>
+                                            <option value="7">7系</option>
+                                            <option value="8">8系</option>
+                                            <option value="9">9系</option>
+                                            <option value="10">10系</option>
+                                            <option value="11">11系</option>
+                                            <option value="12">12系</option>
+                                            <option value="13">13系</option>
+                                            <option value="14">14系</option>
+                                            <option value="15">15系</option>
+                                            <option value="16">16系</option>
+                                            <option value="17">17系</option>
+                                            <option value="18">18系</option>
+                                            <option value="19">19系</option>
+                                        </select>
+                                    </li>
+                                    <li><button @click="downloadLatLng2XY">DL</button></li>
+                                </ul>                            
+                            </header>
+                            <pre class="terminal">{{toCSV(planeRectangularCoodinateSystem).join("\n")}}</pre>
+                        </section>
+                    </article>
+                    <article class="vertical-split" v-show="programName=='xy2latlng'">
+                        <section v-show="program['xy2latlng'] == 1|| program['xy2latlng'] == 0">
+                            <header>
+                                <ul>
+                                    <li><label>入力</label></li>             
+                                    <li>文字コード
+                                        <label><input type="radio" name="encoding" v-model="encoding" value="SJIS">SJIS</label>
+                                        <label><input type="radio" name="encoding" v-model="encoding" value="UTF8">UTF8</label>
+                                    </li>
+                                    <li><input type="file" @change="readfile"></label></li>
+                                </ul>
+                            </header>
+                            <pre class="terminal" style="max-width: 40vw;">{{ (xyPlane=="") ? "処理したいデータファイルを選択してください": xyPlane }}</pre>
+                        </section>
+                        <section v-show="program['xy2latlng'] == 0|| program['xy2latlng'] == 1">
+                            <header>
+                                <ul>
+                                    <li>変換(X,Y)=>(lat,lng)</li>                                
+                                    <li>
+                                        <select v-model="nth">
+                                            <option value="1">1系</option>
+                                            <option value="2">2系</option>
+                                            <option value="3">3系</option>
+                                            <option value="4">4系</option>
+                                            <option value="5">5系</option>
+                                            <option value="6">6系</option>
+                                            <option value="7">7系</option>
+                                            <option value="8">8系</option>
+                                            <option value="9">9系</option>
+                                            <option value="10">10系</option>
+                                            <option value="11">11系</option>
+                                            <option value="12">12系</option>
+                                            <option value="13">13系</option>
+                                            <option value="14">14系</option>
+                                            <option value="15">15系</option>
+                                            <option value="16">16系</option>
+                                            <option value="17">17系</option>
+                                            <option value="18">18系</option>
+                                            <option value="19">19系</option>
+                                        </select>
+                                    </li>
+                                    <li><button @click="downloadXY2LatLng">DL</button></li>
+                                </ul>
+                            </header>
+                            <pre class="terminal">{{toCSV(latlngCoordinateSystem).join("\n")}}</pre>
+                        </section>
+                    </article>
+                </div>
+                <!-- <aside></aside> -->
             </div>
         </main>
-        <script src="src/app.js"></script>
+        <script src="src/app.js" type="module"></script>
     </body>
 </html>
 
