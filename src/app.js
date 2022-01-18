@@ -154,15 +154,23 @@ const vm = new Vue({
         },
         toCSV(a){
             return a.map((e)=>{ return e.join(",") });
-        },
+        },        
         sortLabel(lines){
-            return lines.sort((a, b)=>{
-                if(a[2] > b[2])
+            const compare = function(a, b){
+                if(a > b)
                     return 1;
-                if(a[2] == b[2])
+                if(a == b)
                     return 0;
-                if(a[2] < b[2])
+                if(a < b)
                     return -1
+            }
+            const RE = /(.*)(\d+)$/;
+            return lines.sort((a, b)=>{
+                if(a[2] == "")
+                    console.log(a[2]);
+                const [allA, prefixA, decimalA] = a[2].match(RE) || [null, "", ""];
+                const [allB, prefixB, decimalB] = b[2].match(RE) || [null, "", ""];
+                return compare(prefixA, prefixB) || compare(decimalA-0, decimalB-0);
             })
         },
         downloadGMyMap(){
